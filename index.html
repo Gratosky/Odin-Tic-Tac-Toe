@@ -5,5 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body></body>
+  <body>
+    <script>
+      const Gameboard = (function () {
+        const board = [
+          ["", "", ""],
+          ["", "", ""],
+          ["", "", ""],
+        ];
+
+        let currentPlayer = "X";
+        let gameActive = true;
+
+        const getBoard = () => board;
+
+        // DISPLAY BOARD
+        function displayBoard() {
+          console.log("\n----- TIC TAC TOE -----");
+          console.log(
+            `${board[0][0] || "1"} | ${board[0][1] || "2"} | ${
+              board[0][2] || "3"
+            }`
+          );
+          console.log("---+---+---");
+          console.log(
+            `${board[1][0] || "4"} | ${board[1][1] || "5"} | ${
+              board[1][2] || "6"
+            }`
+          );
+          console.log("---+---+---");
+          console.log(
+            `${board[2][0] || "7"} | ${board[2][1] || "8"} | ${
+              board[2][2] || "9"
+            }`
+          );
+          console.log("-------------------");
+        }
+
+        // GET PLAYER MOVE
+        function getPlayerMove(input) {
+          return (input = prompt("Enter your marker"));
+        }
+
+        // GET CELL NUMBER
+        function getCells(cell) {
+          const row = Math.floor((cell - 1) / 3);
+          const col = (cell - 1) % 3;
+
+          return [row, col];
+        }
+
+        function isWin(currentBoard, player) {
+          const winConditions = [
+            // HORIZONTAL CONDITIONS
+            [currentBoard[0][0], currentBoard[0][1], currentBoard[0][2]],
+            [currentBoard[1][0], currentBoard[1][1], currentBoard[1][2]],
+            [currentBoard[2][0], currentBoard[2][1], currentBoard[2][2]],
+
+            //VERTICAL CONDITIONS
+            [(currentBoard[0][0], currentBoard[1][0], currentBoard[2][0])],
+            [currentBoard[0][1], currentBoard[1][1], currentBoard[2][1]],
+            [currentBoard[0][2], currentBoard[1][2], currentBoard[2][2]],
+
+            // HORIZONTAL CONDITIONS
+            [currentBoard[0][0], currentBoard[1][1], currentBoard[2][2]],
+            [(currentBoard[2][0], currentBoard[1][1], currentBoard[0][2])],
+          ];
+
+          return winConditions.some(
+            (condition) =>
+              condition[0] === player &&
+              condition[1] === player &&
+              condition[2] === player
+          );
+        }
+
+        function getCurrentPlayer() {
+          return currentPlayer;
+        }
+
+        function isGameActive() {
+          return gameActive;
+        }
+
+        function switchPlayer() {
+          currentPlayer = currentPlayer === "X" ? "O" : "X";
+        }
+
+        // FUNCTION TO RESET GAME
+        function resetGame() {
+          const board = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""],
+          ];
+
+          let currentPlayer = "X";
+          let gameActive = true;
+        }
+
+        // FUNCTION TO CHECK DRAW
+        function checkDraw(currentBoard) {
+          return currentBoard.every((row) => row.every((cell) => cell !== ""));
+        }
+
+        // FUNCTION TO MAKE MOVE
+        function makeMove(cell) {
+          if (!gameActive) {
+            console.log(`Game over. Refresh to play again.`);
+            return;
+          }
+
+          const [row, col] = getCells(cell);
+
+          if (isWin(board, player)) {
+            console.log(`Player ${currentPlayer} wins this round!`);
+            return;
+          }
+        }
+        return {
+          displayBoard,
+          getPlayerMove,
+          getBoard,
+          getCells,
+          getCurrentPlayer,
+        };
+      })();
+
+      console.log(Gameboard.displayBoard());
+      console.log(Gameboard.getCurrentPlayer());
+      console.log(Gameboard.getCells(3));
+    </script>
+  </body>
 </html>
